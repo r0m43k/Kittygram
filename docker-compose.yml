@@ -13,7 +13,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    image: ${{ secrets.DOCKER_USERNAME }}/kittygram_backend:latest
+    image: r0m43k/kittygram_backend:latest
     env_file: .env
     volumes:
       - static:/app/static/
@@ -22,12 +22,12 @@ services:
       - postgres
 
   frontend:
-    image: ${{ secrets.DOCKER_USERNAME }}/kittygram_frontend:latest
+    image: r0m43k/kittygram_frontend:latest
     volumes:
       - static:/frontend_static/
 
   gateway:
-    image: ${{ secrets.DOCKER_USERNAME }}/kittygram_gateway:latest
+    image: r0m43k/kittygram_gateway:latest
     ports:
       - "9000:80"
     volumes:

@@ -8,13 +8,13 @@ volumes:
 services:
   postgres:
     image: postgres:13
-    env_file: .env
+    env_file: _env.example
     volumes:
       - pg_data:/var/lib/postgresql/data
 
   backend:
     image: r0m43k/kittygram_backend:latest
-    env_file: .env
+    env_file: _env.example
     volumes:
       - static:/app/static/
       - media:/app/media/

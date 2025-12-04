@@ -13,7 +13,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    image: <dockerhub_username>/kittygram_backend
+    image: ${{ secrets.DOCKER_USERNAME }}/kittygram_backend:latest
     env_file: .env
     volumes:
       - static:/app/static/
@@ -22,12 +22,12 @@ services:
       - postgres
 
   frontend:
-    image: <dockerhub_username>/kittygram_frontend
+    image: ${{ secrets.DOCKER_USERNAME }}/kittygram_frontend:latest
     volumes:
       - static:/frontend_static/
 
   gateway:
-    image: <dockerhub_username>/kittygram_gateway
+    image: ${{ secrets.DOCKER_USERNAME }}/kittygram_gateway:latest
     ports:
       - "9000:80"
     volumes:
@@ -36,4 +36,3 @@ services:
     depends_on:
       - backend
       - frontend
-

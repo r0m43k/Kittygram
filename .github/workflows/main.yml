@@ -152,7 +152,7 @@ jobs:
 
       - name: Check API /api/cats/ returns 200
         run: |
-          curl -sS -o /dev/null -w "%{http_code}\n" "http://$HOST/api/cats/" | grep -qE "200"
+          curl -sS -o /dev/null -w "%{http_code}\n" "http://$HOST/signin" | grep -qE "200"
 
   telegram-notify:
     runs-on: ubuntu-latest

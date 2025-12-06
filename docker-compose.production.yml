@@ -24,7 +24,7 @@ services:
   frontend:
     image: r0m43k/kittygram_frontend:latest
     volumes:
-      - static:/frontend_static/
+      - static:/app/build/
 
   gateway:
     image: r0m43k/kittygram_gateway:latest

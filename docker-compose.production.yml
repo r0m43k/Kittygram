@@ -1,38 +1,38 @@
-version: '3'
-
-volumes:
-  pg_data:
-  static:
-  media:
-
-services:
-  postgres:
-    image: postgres:13
-    env_file: _env.example
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-
-  backend:
-    image: r0m43k/kittygram_backend:latest
-    env_file: _env.example
-    volumes:
-      - static:/app/static/
-      - media:/app/media/
-    depends_on:
-      - postgres
-
-  frontend:
-    image: r0m43k/kittygram_frontend:latest
-    volumes:
-      - static:/app/build/
-
-  gateway:
-    image: r0m43k/kittygram_gateway:latest
-    ports:
-      - "80:80"
-    volumes:
-      - static:/static/
-      - media:/media/
-    depends_on:
-      - backend
-      - frontend
+version: '3' 
+ 
+volumes: 
+  pg_data: 
+  static: 
+  media: 
+ 
+services: 
+  postgres: 
+    image: postgres:13 
+    env_file: _env.example 
+    volumes: 
+      - pg_data:/var/lib/postgresql/data 
+ 
+  backend: 
+    image: r0m43k/kittygram_backend:latest 
+    env_file: _env.example 
+    volumes: 
+      - static:/app/static/ 
+      - media:/app/media/ 
+    depends_on: 
+      - postgres 
+ 
+  frontend: 
+    image: r0m43k/kittygram_frontend:latest 
+    volumes: 
+      - static:/app/build/ 
+ 
+  gateway: 
+    image: r0m43k/kittygram_gateway:latest 
+    ports: 
+      - "80:80" 
+    volumes: 
+      - static:/static/ 
+      - media:/media/ 
+    depends_on: 
+      - backend 
+      - frontend 

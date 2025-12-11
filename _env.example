@@ -1,3 +1,9 @@
 POSTGRES_DB=kittygram
 POSTGRES_USER=kittygram_user
 POSTGRES_PASSWORD=kittygram_password
+DB_HOST=postgres
+DB_PORT=5432
+
+SECRET_KEY=django-insecure-what-secret-secret$
+ALLOWED_HOSTS=*
+DEBUG=True

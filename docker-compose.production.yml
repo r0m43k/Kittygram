@@ -2,7 +2,8 @@ version: '3'
  
 volumes: 
   pg_data: 
-  static: 
+  backend_static:
+  frontend_static:  
   media: 
  
 services: 
@@ -16,22 +17,23 @@ services:
     image: r0m43k/kittygram_backend:latest 
     env_file: _env.example 
     volumes: 
-      - static:/app/static/ 
-      - media:/app/media/ 
+      - backend_static:/app/collected_static 
+      - media:/app/media
     depends_on: 
       - postgres 
  
   frontend: 
     image: r0m43k/kittygram_frontend:latest 
     volumes: 
-      - static:/app/build/ 
+      - frontend_static:/app/build/ 
  
   gateway: 
     image: r0m43k/kittygram_gateway:latest 
     ports: 
       - "80:80" 
     volumes: 
-      - static:/static/ 
+      - backend_static:/static/
+      - frontend_static:/usr/share/nginx/html/
       - media:/media/ 
     depends_on: 
       - backend 

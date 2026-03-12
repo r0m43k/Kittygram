@@ -130,14 +130,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/${{ secrets.USERNAME }}/Kittygram
-            sudo docker-compose -f docker-compose.production.yml pull
-            sudo docker-compose -f docker-compose.production.yml down
-            sudo docker-compose -f docker-compose.production.yml up -d
+            sudo docker compose -f docker-compose.production.yml pull
+            sudo docker compose -f docker-compose.production.yml down
+            sudo docker compose -f docker-compose.production.yml up -d
 
-            sudo docker-compose -f docker-compose.production.yml exec -T backend python manage.py migrate
-            sudo docker-compose -f docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput
+            sudo docker compose -f docker-compose.production.yml exec -T backend python manage.py migrate
+            sudo docker compose -f docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput
 
-            sudo docker-compose -f docker-compose.production.yml restart gateway
+            sudo docker compose -f docker-compose.production.yml restart gateway
 
             
             ADMIN_USERNAME="${{ secrets.ADMIN_USERNAME }}"

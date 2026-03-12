@@ -15,7 +15,7 @@ services:
  
   backend: 
     image: r0m43k/kittygram_backend:latest 
-    env_file: _env.example 
+    env_file: .env 
     volumes: 
       - backend_static:/app/collected_static 
       - media:/app/media

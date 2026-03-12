@@ -150,6 +150,17 @@ jobs:
 
             cd /home/${{ secrets.USERNAME }}/Kittygram
 
+            cat > .env <<EOF
+            POSTGRES_DB=kittygram
+            POSTGRES_USER=kittygram_user
+            POSTGRES_PASSWORD=kittygram_password
+            DB_HOST=postgres
+            DB_PORT=5432
+
+            SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+            ALLOWED_HOSTS=${{ secrets.HOST }}
+            EOF
+            
             $COMPOSE_CMD -f docker-compose.production.yml pull
             $COMPOSE_CMD -f docker-compose.production.yml down
             $COMPOSE_CMD -f docker-compose.production.yml up -d

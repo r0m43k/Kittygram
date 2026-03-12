@@ -166,6 +166,7 @@ jobs:
 
           $COMPOSE_CMD -f docker-compose.production.yml exec -T backend python manage.py shell -c "from django.contrib.auth.models import User; u, _ = User.objects.get_or_create(username='$ADMIN_USERNAME'); u.is_superuser=True; u.is_staff=True; u.set_password('$ADMIN_PASSWORD'); u.save()"
           
+          
   post_deploy_tests:
     runs-on: ubuntu-latest
     needs: deploy

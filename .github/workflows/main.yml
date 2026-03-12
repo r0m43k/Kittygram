@@ -129,30 +129,41 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo apt update
-            sudo apt upgrade
-            
             if ! command -v docker >/dev/null 2>&1; then
-              sudo apt install -y docker.io docker-compose-plugin
+              sudo apt-get update
+              sudo apt-get install -y docker.io
               sudo systemctl enable docker
               sudo systemctl start docker
             fi
             
+              sudo docker -v
+
+            if sudo docker compose version >/dev/null 2>&1; then
+              COMPOSE_CMD="sudo docker compose"
+            elif command -v docker-compose >/dev/null 2>&1; then
+              COMPOSE_CMD="sudo docker-compose"
+            else
+              echo "Docker Compose not found"
+              exit 1
+            fi
             cd /home/${{ secrets.USERNAME }}/Kittygram
-            sudo docker compose -f docker-compose.production.yml pull
-            sudo docker compose -f docker-compose.production.yml down
-            sudo docker compose -f docker-compose.production.yml up -d
 
-            sudo docker compose -f docker-compose.production.yml exec -T backend python manage.py migrate
-            sudo docker compose -f docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput
+            $COMPOSE_CMD -f docker-compose.production.yml pull
+            $COMPOSE_CMD -f docker-compose.production.yml down
+            $COMPOSE_CMD -f docker-compose.production.yml up -d
 
-            sudo docker compose -f docker-compose.production.yml restart gateway
+            sleep 10
+            
+            $COMPOSE_CMD -f docker-compose.production.yml exec -T backend python manage.py migrate
+            $COMPOSE_CMD -f docker-compose.production.yml exec -T backend python manage.py collectstatic --noinput
+
+            $COMPOSE_CMD -f docker-compose.production.yml restart gateway
 
             
             ADMIN_USERNAME="${{ secrets.ADMIN_USERNAME }}"
             ADMIN_PASSWORD="${{ secrets.ADMIN_PASSWORD }}"
 
-            sudo docker compose -f docker-compose.production.yml exec -T backend python manage.py shell -c "from django.contrib.auth.models import User; u, _ = User.objects.get_or_create(username='$ADMIN_USERNAME'); u.is_superuser=True; u.is_staff=True; u.set_password('$ADMIN_PASSWORD'); u.save()"
+            $COMPOSE_CMD -f docker-compose.production.yml exec -T backend python manage.py shell -c "from django.contrib.auth.models import User; u, _ = User.objects.get_or_create(username='$ADMIN_USERNAME'); u.is_superuser=True; u.is_staff=True; u.set_password('$ADMIN_PASSWORD'); u.save()"
 
   post_deploy_tests:
     runs-on: ubuntu-latest

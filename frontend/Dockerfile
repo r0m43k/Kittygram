@@ -9,5 +9,9 @@ RUN npm ci
 COPY . .
 RUN npm run build
 RUN npm install --global http-server
+RUN mv /app/build /frontend_build
 
-CMD ["npx", "-y", "http-server", "-p", "8000", "/app/build"]
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+CMD ["/docker-entrypoint.sh"]

@@ -184,13 +184,24 @@ jobs:
     env:
       HOST: ${{ secrets.HOST }}
     steps:
-      - name: Check homepage returns 200
+      - name: Check homepage contains SPA shell
         run: |
-          curl -sS -o /dev/null -w "%{http_code}\n" "http://$HOST/" | grep -qE "200"
+          curl -fsS "http://$HOST/" | grep -q '<div id="root"></div>'
 
-      - name: Check API /api/cats/ returns 200
+      - name: Check frontend bundle is reachable
         run: |
-          curl -sS -o /dev/null -w "%{http_code}\n" "http://$HOST/signin" | grep -qE "200"
+          INDEX_HTML="$(curl -fsS "http://$HOST/")"
+          SCRIPT_PATH="$(printf '%s' "$INDEX_HTML" | grep -oE '/static/js/[^"]+\.js' | head -n 1)"
+
+          test -n "$SCRIPT_PATH"
+          curl -fsS -o /dev/null "http://$HOST$SCRIPT_PATH"
+
+      - name: Check API /api/cats/ responds with JSON
+        run: |
+          status="$(curl -sS -o /tmp/api-response.json -D /tmp/api-headers.txt -w "%{http_code}" "http://$HOST/api/cats/")"
+
+          printf '%s' "$status" | grep -qE '^(200|401|403)$'
+          grep -qi '^content-type: application/json' /tmp/api-headers.txt
 
   telegram-notify:
     runs-on: ubuntu-latest

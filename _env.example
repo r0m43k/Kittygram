@@ -1,6 +1,1 @@
-#файл окружения создается сразу на сервере с помощью запроса в main.yml. Данные переменных хранятся в Git Secrets
-POSTGRES_DB
-DB_USER
-POSTGRES_PASSWORD
-DB_HOST=postgres
-DB_PORT=5432
+#реальный файл окружения создается сразу на сервере в main.yml. Данные переменных хранятся в Git Secrets

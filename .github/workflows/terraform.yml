@@ -32,7 +32,6 @@ jobs:
       
       - name: Terraform validate
         working-directory: ./infra
-        if: ${{ github.event.inputs.action == 'validate' }}
         run: terraform validate
         env:
           ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
